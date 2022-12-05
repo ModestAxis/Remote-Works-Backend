@@ -1,0 +1,24 @@
+{   
+    "first_name": "Arnaud",
+    "last_name": "Pelletier Maurais",
+    "timezone": "Eastern Standard Time",
+    "country": "Canada",
+    "email": "arnaudpm@hotmail.com",
+    "password": "$2b$10$wcdAiIlVY5pAg5I2O8wMs.yMUQis3DoGkRQQRiCTULVrp2RbjO1cq",
+    "img": null,
+    "cv": null,
+    "website": "",
+    "git_url": "https://github.com/ModestAxis",
+    "experiences": [
+        {
+            "isCurrent": false,
+            "start_date": "01-01-2017",
+            "end_date": "01-09-2021",
+            "job_title": "technical support",
+            "company": "Vif Internet",
+            "reference": "Siam",
+            "contact": "514-555-5555",
+            "description": "i helped people with their internet issue, i also fixed their router and routed calls to the appropriate person"
+        }
+    ]
+}

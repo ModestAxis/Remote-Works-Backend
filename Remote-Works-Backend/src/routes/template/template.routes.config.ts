@@ -1,4 +1,4 @@
-import { CommonRoutesConfig } from "../../common/common.route.config";
+import { CommonRoutesConfig } from '../../common/common.route.config';
 import express, { Application, Request, Response, NextFunction } from 'express';
 
 export class TemplateRoutes extends CommonRoutesConfig {

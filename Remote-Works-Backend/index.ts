@@ -1,7 +1,11 @@
-import { TemplateRoutes } from './src/routes/template/template.routes.config';
+
 import { CommonRoutesConfig } from './src/common/common.route.config';
+import { UsersRoutes } from './src/routes/users.route.config';
+import { AuthRoutes } from './auth/auth.routes.config';
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
+import helmet from "helmet";
+import nocache from "nocache";
 import * as http from 'http';
 import * as winston from 'winston';
 import * as expressWinston from 'express-winston';
@@ -9,7 +13,17 @@ import cors from 'cors';
 import debug from 'debug';
 
 
-dotenv.config()
+
+const dotenvResult = dotenv.config();
+if (dotenvResult.error) {
+    throw dotenvResult.error;
+}
+
+if (!(process.env.PORT)) {
+  throw new Error(
+    "Missing required environment variables."
+  );
+}
 
 const app: Express = express();
 const server: http.Server = http.createServer(app);
@@ -19,6 +33,38 @@ const debugLog: debug.IDebugger = debug('app');
 
 // here we are adding middleware to parse all incoming requests as JSON
 app.use(express.json());
+app.set("json spaces", 2);
+
+
+app.use(
+  helmet({
+    hsts: {
+      maxAge: 31536000,
+    },
+    contentSecurityPolicy: {
+      useDefaults: false,
+      directives: {
+        "default-src": ["'none'"],
+        "frame-ancestors": ["'none'"],
+      },
+    },
+    frameguard: {
+      action: "deny",
+    },
+  })
+);
+
+
+
+app.use((req, res, next) => {
+  res.contentType("application/json; charset=utf-8");
+  next();
+});
+app.use(nocache());
+
+
+
+
 // here we are adding middleware to allow cross-origin requests
 app.use(cors());
 
@@ -41,8 +87,8 @@ if (!process.env.DEBUG) {
 app.use(expressWinston.logger(loggerOptions));
 
 // Adding routes to the routes array
-routes.push(new TemplateRoutes(app));
-
+routes.push(new UsersRoutes(app));
+routes.push(new AuthRoutes(app)); 
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server(is Running)');
