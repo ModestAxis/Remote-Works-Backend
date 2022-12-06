@@ -74,7 +74,6 @@ export class UsersRoutes extends CommonRoutesConfig {
             body('permissionFlags').isInt().optional(),
             UsersMiddleware.validatePatchEmail,
             UsersMiddleware.userCantChangePermission,
-           // PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_COMPANY),
             UsersController.patch,
         ]);
 

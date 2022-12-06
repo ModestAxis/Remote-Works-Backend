@@ -76,7 +76,10 @@ const loggerOptions: expressWinston.LoggerOptions = {
 };
 
 if (!process.env.DEBUG) {
+  
   loggerOptions.meta = false; // when not debugging, log requests as one-liners
+
+  if (typeof global.it === 'function') loggerOptions.level = 'http'; // mute the debugger if running non-debug tests
 }
 
 // initialize the logger with the above configuration
@@ -90,7 +93,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server(is Running)');
 });
 
-app.listen(PORT, () => {
+export default app.listen(PORT, () => {
 
   routes.forEach((route: CommonRoutesConfig) => {
     debugLog(`Routes configured for ${route.getName()}`);
@@ -98,5 +101,7 @@ app.listen(PORT, () => {
   
   console.log(`[server]: Server is running at http://localhost:${PORT}`);
 });
+
+
 
  
