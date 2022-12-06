@@ -1,0 +1,7 @@
+export enum PermissionFlag {
+    USER_NO_VALIDATE = 1,
+    VALIDATED_USER = 2,
+    VALIDATED_COMPANY = 4,
+    ADMIN_PERMISSION = 8,
+    ALL_PERMISSIONS = 2147483647,
+}

@@ -1,7 +1,7 @@
 
 import { CommonRoutesConfig } from './src/common/common.route.config';
 import { UsersRoutes } from './src/routes/users.route.config';
-import { AuthRoutes } from './auth/auth.routes.config';
+import { AuthRoutes } from './src/routes/auth.routes.config';
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
 import helmet from "helmet";
@@ -19,7 +19,7 @@ if (dotenvResult.error) {
     throw dotenvResult.error;
 }
 
-if (!(process.env.PORT)) {
+if (!(process.env.PORT || process.env.MONGO_URL || process.env.JWT_SECRET)) {
   throw new Error(
     "Missing required environment variables."
   );
@@ -54,15 +54,11 @@ app.use(
   })
 );
 
-
-
 app.use((req, res, next) => {
   res.contentType("application/json; charset=utf-8");
   next();
 });
 app.use(nocache());
-
-
 
 
 // here we are adding middleware to allow cross-origin requests

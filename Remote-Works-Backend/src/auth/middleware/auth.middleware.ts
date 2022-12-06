@@ -1,5 +1,5 @@
 import express from 'express';
-import usersService from '../../src/users/services/users.service';
+import usersService from '../../users/services/users.service';
 import bcrypt from 'bcrypt';
 
 class AuthMiddleware {

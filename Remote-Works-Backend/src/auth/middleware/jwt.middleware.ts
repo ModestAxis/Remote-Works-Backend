@@ -1,8 +1,8 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { Jwt } from '../../src/common/type/jwt';
-import usersService from '../../src/users/services/users.service';
+import { Jwt } from '../../common/type/jwt';
+import usersService from '../../users/services/users.service';
 
 const jwtSecret: string = process.env.JWT_SECRET;
 

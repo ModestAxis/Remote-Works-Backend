@@ -1,6 +1,9 @@
 import { CommonRoutesConfig } from '../common/common.route.config';
 import UsersController from '../users/controller/users.controller';
 import UsersMiddleware from '../users/middleware/users.middleware';
+import jwtMiddleware from '../auth/middleware/jwt.middleware';
+import PermissionMiddleware from '../common/middleware/common.permission.middleware';
+import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
 import express from 'express';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middlewar';
 import { body } from 'express-validator';
@@ -13,7 +16,11 @@ export class UsersRoutes extends CommonRoutesConfig {
     configureRoutes(): express.Application {
         this.app
             .route(`/users`)
-            .get(UsersController.listUsers)
+            .get(
+                jwtMiddleware.validJWTNeeded,
+                PermissionMiddleware.permissionFlagRequired(PermissionFlag.ADMIN_PERMISSION),
+                UsersController.listUsers
+                )
             .post(
                 body('email').isEmail(),
                 body('password').isLength({ min: 5 }).withMessage('Must include password (5+ characters)'),
@@ -25,7 +32,11 @@ export class UsersRoutes extends CommonRoutesConfig {
         this.app.param(`userId`, UsersMiddleware.extractUserId);
         this.app
             .route(`/users/:userId`)
-            .all(UsersMiddleware.validateUserExists)
+            .all(
+                UsersMiddleware.validateUserExists,
+                jwtMiddleware.validJWTNeeded,
+                PermissionMiddleware.sameUserOrAdmin
+            )
             .get(UsersController.getUserById)
             .delete(UsersController.removeUser);
 
@@ -45,6 +56,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             body('permissionFlags').isInt().optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.validateSameEmailBelongToSameUser,
+            UsersMiddleware.userCantChangePermission,
             UsersController.put,
         ]);
 
@@ -61,6 +73,8 @@ export class UsersRoutes extends CommonRoutesConfig {
             body('git_url').isString().optional(),
             body('permissionFlags').isInt().optional(),
             UsersMiddleware.validatePatchEmail,
+            UsersMiddleware.userCantChangePermission,
+           // PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_COMPANY),
             UsersController.patch,
         ]);
 

@@ -1,10 +1,10 @@
-import { CommonRoutesConfig } from '../src/common/common.route.config';
-import AuthController from './controllers/auth.controller';
-import AuthMiddleware from './middleware/auth.middleware';
+import { CommonRoutesConfig } from '../common/common.route.config';
+import AuthController from '../auth/controllers/auth.controller';
+import AuthMiddleware from '../auth/middleware/auth.middleware';
 import express from 'express';
-import BodyValidationMiddleware from '../src/common/middleware/body.validation.middlewar'
+import BodyValidationMiddleware from '../common/middleware/body.validation.middlewar'
 import { body } from 'express-validator';
-import jwtMiddleware from './middleware/jwt.middleware';
+import jwtMiddleware from '../auth/middleware/jwt.middleware';
 
 export class AuthRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
@@ -25,6 +25,7 @@ export class AuthRoutes extends CommonRoutesConfig {
             jwtMiddleware.validRefreshNeeded,
             AuthController.createJWT,
         ]);
+        
         return this.app;
     }
 }
