@@ -66,7 +66,7 @@ class JwtMiddleware {
                     next();
                 }
             } catch (err) {
-                return res.status(403).send();
+                return res.status(403).send("403 thrown at ValidJWTNeeded");
             }
         } else {
             return res.status(401).send();

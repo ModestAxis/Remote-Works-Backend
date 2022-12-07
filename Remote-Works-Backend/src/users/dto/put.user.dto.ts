@@ -1,5 +1,3 @@
-import { Mixed } from "mongoose";
-
 export interface PutUserDto {
     id_?: string;
     email: string;
@@ -14,5 +12,6 @@ export interface PutUserDto {
     git_url: string;
     permissionFlags: number;
     experiences: Array<any>;
+    applications: Array<any>;
 }
     

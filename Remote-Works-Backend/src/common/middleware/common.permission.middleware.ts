@@ -39,9 +39,12 @@ class PermissionMiddleware {
             //we dont need to check against permission
             //this will be used for user to edit and consult their profile
             //this will be used for company account to edit their profile and post/edit their adds
-            req.params &&
+            (req.params &&
             req.params.userId &&
-            req.params.userId === res.locals.jwt.userId
+            req.params.userId === res.locals.jwt.userId) ||
+            (req.params &&
+            req.params.businessId &&
+            req.params.businessId === res.locals.jwt.userId)
         ) {
             return next();
         } else {
@@ -50,7 +53,7 @@ class PermissionMiddleware {
             if (userPermissionFlags & PermissionFlag.ADMIN_PERMISSION) {
                 return next();
             } else {
-                return res.status(403).send();
+                return res.status(403).send("thrown in same User or Admin");
             }
 
         }

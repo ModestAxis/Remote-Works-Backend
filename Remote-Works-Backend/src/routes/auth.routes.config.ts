@@ -12,11 +12,18 @@ export class AuthRoutes extends CommonRoutesConfig {
     }
 
     configureRoutes(): express.Application {
-        this.app.post(`/auth`, 
+        this.app.post(`/auth/user`, 
             body('email').isEmail(),
             body('password').isString(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             AuthMiddleware.verifyUserPassword,
+            AuthController.createJWT,
+        );
+        this.app.post(`/auth/business`, 
+            body('email').isEmail(),
+            body('password').isString(),
+            BodyValidationMiddleware.verifyBodyFieldsErrors,
+            AuthMiddleware.verifyBusinessPassword,
             AuthController.createJWT,
         );
         this.app.post(`/auth/refresh-token`, [

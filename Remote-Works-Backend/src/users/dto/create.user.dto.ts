@@ -1,5 +1,3 @@
-import { Mixed } from "mongoose";
-
 export interface CreateUserDto {
     id_?: string;
     email: string;
@@ -14,4 +12,5 @@ export interface CreateUserDto {
     git_url?: string;
     permissionFlags?: number;
     experiences?: Array<any>;
+    applications?: Array<any>;
 }

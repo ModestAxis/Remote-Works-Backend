@@ -58,6 +58,12 @@ class UsersDao {
         "type": [
           "Mixed"
         ]
+      },
+
+      "applications": {
+        "type": [
+          "Mixed"
+        ]
       }
     }, { id: false }
   )
@@ -116,7 +122,6 @@ async removeUserById(userId: string) {
 }
 
 async getUserByEmailWithPassword(email: string) {
-  console.log('here')
   return this.User.findOne({ email: email })
       .select('_id email permissionFlags + password')
       .exec();
