@@ -3,6 +3,7 @@ import { CommonRoutesConfig } from './src/common/common.route.config';
 import { UsersRoutes } from './src/routes/users.route.config';
 import { AuthRoutes } from './src/routes/auth.routes.config';
 import { BusinessRoutes } from './src/routes/business.routes.config'
+import { PostingsRoutes } from './src/routes/postings.route.config';
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
 import helmet from "helmet";
@@ -89,7 +90,8 @@ app.use(expressWinston.logger(loggerOptions));
 // Adding routes to the routes array
 routes.push(new UsersRoutes(app));
 routes.push(new AuthRoutes(app));
-routes.push(new BusinessRoutes(app)); 
+routes.push(new BusinessRoutes(app));
+routes.push(new PostingsRoutes(app));
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server(is Running)');
