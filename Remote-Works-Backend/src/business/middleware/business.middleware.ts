@@ -92,7 +92,7 @@ class BusinessMiddleware {
     ) {
         if(
             'permissionFlags' in req.body &&
-            req.body.permissionFlags !== res.locals.Business.permissionFlags
+            req.body.permissionFlags !== res.locals.business.permissionFlags
         ) {
             res.status(400).send({
                 error: ['Business cannot change permission flags']

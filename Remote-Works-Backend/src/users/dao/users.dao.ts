@@ -8,7 +8,7 @@ import { PermissionFlag } from '../../common/middleware/common.permissionflag.en
 
 
 
-const log: debug.IDebugger = debug('app:in-memory-dao');
+const log: debug.IDebugger = debug('app:user-in-memory-dao');
 
 class UsersDao {
 
