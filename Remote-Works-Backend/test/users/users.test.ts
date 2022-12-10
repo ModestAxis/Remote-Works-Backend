@@ -58,7 +58,7 @@ describe('user and auth endpoints', function () {
     })
 
     it('should allow Post to /auth', async function () {
-        const res = await request.post('/auth').send(firstUserBody);
+        const res = await request.post('/auth/user').send(firstUserBody);
         expect(res.status).to.equal(201);
         expect(res.body).not.to.be.empty;
         expect(res.body).to.be.an('object');
