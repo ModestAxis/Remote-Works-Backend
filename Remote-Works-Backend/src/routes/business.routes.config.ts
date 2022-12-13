@@ -19,7 +19,7 @@ export class BusinessRoutes extends CommonRoutesConfig {
 
         this.app
             //get to this routes return a list of all business (takes admin permission)
-            //post create a new business account and saves it to the DB (does not require any permission)
+            //post creates a new business account and saves it to the DB (does not require any permission)
             .route('/business')
             .get(
                 jwtMiddleware.validJWTNeeded,

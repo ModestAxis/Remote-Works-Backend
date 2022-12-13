@@ -2,6 +2,7 @@ import express from 'express';
 import postingsService from '../services/postings.service';
 import debug from 'debug';
 
+
 const log : debug.IDebugger = debug('app:postings-middleware')
 
 class PostingsMiddleware {
@@ -56,6 +57,26 @@ class PostingsMiddleware {
         
         req.body.id = req.params.postingId;
         next();
+    }
+    async pushUserIdToPosting(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        res.locals.postings.applicants_id.push(res.locals.jwt.userId);
+        req.body.applicants_id = res.locals.postings.applicants_id;
+        next();
+    }
+
+    async validateOneApplicationPerUser(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        if(res.locals.postings.applicants_id.includes(res.locals.jwt.userId)) {
+            res.status(400).send('User has already applied to current posting')
+        }
+        return next();
     }
 }
 

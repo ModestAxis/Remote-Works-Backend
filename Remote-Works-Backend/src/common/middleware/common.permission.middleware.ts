@@ -17,6 +17,7 @@ class PermissionMiddleware {
                     res.locals.jwt.permissionFlags
                 );
                 if( userPermissionFlags & requiredPermissionFlag) {
+                    
                     next();
                 }
                 else {
@@ -49,11 +50,18 @@ class PermissionMiddleware {
             return next();
         } else {
 
+            //in case this is a job posting id we are patching then we do a get on the posting
+            if (req.params &&
+                req.params.postingId
+                && res.locals.jwt.userId === res.locals.postings.business_id) {
+                    return next()
+                }
+
             //here we will check if user is an admin
             if (userPermissionFlags & PermissionFlag.ADMIN_PERMISSION) {
                 return next();
             } else {
-                return res.status(403).send("thrown in same User or Admin");
+                return res.status(403).send("403, Wrong user or admin rights required");
             }
 
         }
