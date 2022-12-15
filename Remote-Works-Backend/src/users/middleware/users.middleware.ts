@@ -1,6 +1,7 @@
 import express from 'express';
 import userService from '../services/users.service';
 import debug from 'debug';
+import shortid from 'shortid';
 
 const log: debug.IDebugger = debug('app:users-middleware');
 
@@ -82,6 +83,38 @@ class UsersMiddleware {
         next: express.NextFunction
     ) {
         req.body.id = req.params.userId;
+        next();
+    }
+
+    //format the request for a patch request on the experience array of a user
+    async pushExperienceToArray(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        let id = req.body.id;
+        //we delete the id that was pushed in extractId we dont need it in the experiences array
+        delete req.body.id;
+
+        req.body.expId = shortid.generate();
+
+        //a little hacky but it works well enough...
+        //here we push the body sent from the client to the user copy in res.locals that we get in validateUserExist
+        //we empty the req and then format the body the way we want send the req to be patched down the pipeline
+        res.locals.user.experiences.push(req.body);
+        req.body = {};
+        req.body.id = id;
+        req.body.experiences = res.locals.user.experiences;
+        
+        next();
+    }
+
+    async removeExperienceFromArray(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        req.body.experiences = res.locals.user.experiences.filter((ele : any) =>  ele.expId != req.body.expId)
         next();
     }
 

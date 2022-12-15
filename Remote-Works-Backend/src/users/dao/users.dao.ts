@@ -80,7 +80,7 @@ class UsersDao {
     const user = new this.User({
       _id: userId,
       ...userFields,
-      permissionFlags: PermissionFlag.USER_NO_VALIDATE,
+      permissionFlags: PermissionFlag.VALIDATED_USER,
     });
     await user.save();
     return user._id;
