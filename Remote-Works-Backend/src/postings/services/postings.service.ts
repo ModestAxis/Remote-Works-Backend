@@ -14,6 +14,10 @@ class PostingsService implements CRUD {
         return PostingDao.removePostingsById(id);
     }
 
+    async listBusinessPostings(businessId: string) {
+        return PostingDao.getBusinessPostingsById(businessId);
+    }
+
     async list(limit: number, page: number) {
         return PostingDao.getPostings(limit, page);
     }

@@ -58,6 +58,16 @@ class PostingsMiddleware {
         req.body.id = req.params.postingId;
         next();
     }
+
+    async extractBusinessId(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        req.body.id = req.params.businessId;
+        next();
+    }
+    
     async pushUserIdToPosting(
         req: express.Request,
         res: express.Response,

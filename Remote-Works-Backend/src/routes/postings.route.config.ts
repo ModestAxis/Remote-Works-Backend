@@ -26,7 +26,17 @@ export class PostingsRoutes extends CommonRoutesConfig {
                 postingsMiddleware.validateOneJobTitlePerBusiness,
                 jwtMiddleware.validJWTNeeded,
                 PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_COMPANY),
-                postingsController.createPosting)
+                postingsController.createPosting);
+
+        this.app
+            .route(`/postings/business/:businessId`)
+            .get(
+                postingsMiddleware.extractBusinessId,
+                jwtMiddleware.validJWTNeeded,
+                PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_COMPANY),
+                postingsController.listBusinessPostings
+
+            );
 
         this.app.param(`postingId`, postingsMiddleware.extractPostingsId);
 

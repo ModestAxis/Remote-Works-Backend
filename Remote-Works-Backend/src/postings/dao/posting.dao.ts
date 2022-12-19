@@ -85,6 +85,10 @@ class PostingsDao {
         return existingPostings;
     }
 
+    async getBusinessPostingsById(businessId: string) {
+        return this.Postings.find({business_id : businessId}).exec()
+    }
+
     async removePostingsById(postingsId: string) {
         return this.Postings.deleteOne({ _id: postingsId }).exec()
     }
