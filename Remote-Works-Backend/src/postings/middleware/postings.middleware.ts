@@ -1,7 +1,7 @@
 import express from 'express';
 import postingsService from '../services/postings.service';
 import debug from 'debug';
-
+import usersDao from '../../users/dao/users.dao';
 
 const log : debug.IDebugger = debug('app:postings-middleware')
 
@@ -73,20 +73,25 @@ class PostingsMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
+
         res.locals.postings.applicants_id.push(res.locals.jwt.userId);
         req.body.applicants_id = res.locals.postings.applicants_id;
+        await usersDao.updateUserApplications(res.locals.jwt.userId, res.locals.postings._id)
+        console.log(" req.body : " + JSON.stringify(req.body));
+        console.log(" res.locals.postings : " + res.locals.postings);
+        console.log(" res.locals.jwt : " + res.locals.jwt);
         next();
     }
-
+ 
     async validateOneApplicationPerUser(
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
     ) {
-        if(res.locals.postings.applicants_id.includes(res.locals.jwt.userId)) {
-            res.status(400).send('User has already applied to current posting')
+        if(!res.locals.postings.applicants_id.includes(res.locals.jwt.userId)) {
+            return next();
         }
-        return next();
+        res.status(400).send('User has already applied to current posting')
     }
 }
 

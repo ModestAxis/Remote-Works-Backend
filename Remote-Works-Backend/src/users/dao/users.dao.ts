@@ -1,3 +1,4 @@
+import { Application } from 'express';
 import mongooseService from '../../common/services/mongoose.service';
 import shortid from 'shortid';
 import debug from 'debug';
@@ -59,12 +60,8 @@ class UsersDao {
           "Mixed"
         ]
       },
+      applications : [String]
 
-      "applications": {
-        "type": [
-          "Mixed"
-        ]
-      }
     }, { id: false }
   )
 
@@ -116,6 +113,12 @@ const existingUser = await this.User.findOneAndUpdate(
 
     return existingUser;
 }
+
+async updateUserApplications(userId: string, applicationId: string) {
+  let user : any = await this.getUserById(userId);
+  user.applications.push(applicationId);
+  this.updateUserById(userId, user)
+} 
 
 async removeUserById(userId: string) {
   return this.User.deleteOne({ _id: userId }).exec();
