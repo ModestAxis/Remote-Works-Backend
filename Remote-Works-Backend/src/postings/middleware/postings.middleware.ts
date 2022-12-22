@@ -20,15 +20,29 @@ class PostingsMiddleware {
             })
         }
     }
-
+    
     async validateOneJobTitlePerBusiness (
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
     ) {
         //to code
+        console.log(" req.body : " + JSON.stringify(req.body));
+        console.log(" res.locals.postings : " + res.locals.postings);
+        console.log(" res.locals.jwt : " + res.locals.jwt);
         next();
     }
+
+    // async pushPostingIdToBusiness (
+    //     req: express.Request,
+    //     res: express.Response,
+    //     next: express.NextFunction
+    // ) {
+    //     res.locals.postings.applicants_id.push(res.locals.jwt.userId);
+    //     req.body.applicants_id = res.locals.postings.applicants_id;
+    //     await usersDao.updateUserApplications(res.locals.jwt.userId, res.locals.postings._id)
+    //     next();
+    // }
 
     async validatePostingsExist(
         req: express.Request,
@@ -77,9 +91,7 @@ class PostingsMiddleware {
         res.locals.postings.applicants_id.push(res.locals.jwt.userId);
         req.body.applicants_id = res.locals.postings.applicants_id;
         await usersDao.updateUserApplications(res.locals.jwt.userId, res.locals.postings._id)
-        console.log(" req.body : " + JSON.stringify(req.body));
-        console.log(" res.locals.postings : " + res.locals.postings);
-        console.log(" res.locals.jwt : " + res.locals.jwt);
+        
         next();
     }
  

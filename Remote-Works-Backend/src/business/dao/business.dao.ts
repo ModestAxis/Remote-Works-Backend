@@ -36,12 +36,7 @@ class BusinessDao {
             "permissionFlags": {
                 "type": "Number"
             },
-            "job_postings": {
-                "type": [
-                    "Mixed"
-                ]
-            }
-
+            job_postings : [String]
         }, { id: false }
     )
 
@@ -91,6 +86,12 @@ class BusinessDao {
         console.log(existingBusiness);
     
         return existingBusiness;
+    }
+
+    async updateBusinessJobPostings (businessId: string, postingId : string) {
+        let business : any = await this.getBusinessById(businessId);
+        business.job_postings.push(postingId);
+        return this.updateBusinessById(businessId, business);
     }
     
     async removeBusinessById(businessId: string) {

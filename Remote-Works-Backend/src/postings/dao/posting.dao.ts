@@ -4,6 +4,7 @@ import debug from 'debug';
 import { CreatePostingsDto } from '../dto/create.postings.dto'
 import { PutPostingsDto } from '../dto/put.postings.dto';
 import { PatchPostingsDto } from '../dto/patch.postings.dto'
+import businessDao from '../../business/dao/business.dao';
 
 const log: debug.IDebugger = debug('app:postings-in-memory-dao');
 
@@ -62,6 +63,9 @@ class PostingsDao {
             created_date: new Date(),
             ...postingsFields,
         })
+        console.log("in posting DAO Biz Id" + postings.business_id)
+        console.log("in posting DAO post Id" + postings._id)
+        await businessDao.updateBusinessJobPostings(postings.business_id!, postings._id)
         await postings.save();
         return postings._id;
     }

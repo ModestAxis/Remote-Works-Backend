@@ -23,9 +23,11 @@ export class PostingsRoutes extends CommonRoutesConfig {
             .post(
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 postingsMiddleware.validatePostingsBodyFields,
-                postingsMiddleware.validateOneJobTitlePerBusiness,
                 jwtMiddleware.validJWTNeeded,
+                
                 PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_COMPANY),
+                //postingsMiddleware.validateOneJobTitlePerBusiness,
+                
                 postingsController.createPosting);
 
         this.app
