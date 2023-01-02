@@ -7,7 +7,6 @@ import { PermissionFlag } from '../common/middleware/common.permissionflag.enum'
 import express from 'express';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middlewar';
 import { body } from 'express-validator';
-import usersMiddleware from '../users/middleware/users.middleware';
 
 export class UsersRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
@@ -88,7 +87,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             UsersMiddleware.userCantChangePermission,
             PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_USER),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
-            usersMiddleware.pushExperienceToArray,
+            UsersMiddleware.pushExperienceToArray,
             UsersController.patch,
             
         ])
@@ -100,10 +99,24 @@ export class UsersRoutes extends CommonRoutesConfig {
             UsersMiddleware.userCantChangePermission,
             PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_USER),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
-            usersMiddleware.removeExperienceFromArray,
+            UsersMiddleware.removeExperienceFromArray,
             UsersController.patch,
             
-        ])
+        ]);
+
+        this.app.get(`/users/applications/:userId`,
+            UsersMiddleware.validateUserExists,
+            jwtMiddleware.validJWTNeeded,
+            PermissionMiddleware.sameUserOrAdmin,
+            UsersMiddleware.userCantChangePermission,
+            PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_USER),
+            UsersMiddleware.getUserApplication,
+            UsersController.sendUserApplications,
+            
+
+        )
+
+        this.app
 
         return this.app;
     }

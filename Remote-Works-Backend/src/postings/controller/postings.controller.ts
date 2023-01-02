@@ -15,6 +15,7 @@ class PostingsController {
         const postings = await postingsService.listBusinessPostings(req.body.id);
         res.status(200).send(postings)
     }
+
     
     async getPostingById(req: express.Request, res: express.Response) {
         const posting = await postingsService.readById(req.body.id);

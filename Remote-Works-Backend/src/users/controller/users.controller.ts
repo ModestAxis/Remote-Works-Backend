@@ -46,6 +46,11 @@ class UsersController {
         log(await usersService.deleteById(req.body.id));
         res.status(204).send();
     }
+
+    async sendUserApplications(req: express.Request, res: express.Response) {
+        
+        res.status(200).send(req.body.applications);
+    }
 }
 
 export default new UsersController();

@@ -2,6 +2,7 @@ import express from 'express';
 import userService from '../services/users.service';
 import debug from 'debug';
 import shortid from 'shortid';
+import postingDao from '../../postings/dao/posting.dao';
 
 const log: debug.IDebugger = debug('app:users-middleware');
 
@@ -86,6 +87,16 @@ class UsersMiddleware {
         next();
     }
 
+    async extractUserIdFromJwt(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        // req.body.id = res.locals.jwt.userId;
+        console.log(req.body.id);
+        next();
+    }
+
     //format the request for a patch request on the experience array of a user
     async pushExperienceToArray(
         req: express.Request,
@@ -135,6 +146,22 @@ class UsersMiddleware {
         }
     }
 
+    
+
+    async getUserApplication(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        let body : Array<any> = [];
+        for( let app of res.locals.user.applications) {
+             body.push( await postingDao.getPostingsById(app))  
+        }
+        
+        req.body.applications = body;
+        
+        next();
+    }
 }
 
 export default new UsersMiddleware();
