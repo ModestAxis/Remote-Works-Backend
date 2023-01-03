@@ -2,6 +2,7 @@ import express from 'express';
 import postingsService from '../services/postings.service';
 import debug from 'debug';
 import usersDao from '../../users/dao/users.dao';
+import businessDao from '../../business/dao/business.dao';
 
 const log : debug.IDebugger = debug('app:postings-middleware')
 
@@ -43,6 +44,29 @@ class PostingsMiddleware {
     //     await usersDao.updateUserApplications(res.locals.jwt.userId, res.locals.postings._id)
     //     next();
     // }
+
+    async businessIdToBody(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        req.body.business_id = res.locals.jwt.userId;
+        next();
+    }
+
+    async businessNameToBody(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        let business = await businessDao.getBusinessById(res.locals.jwt.userId);
+        
+        if(business) {
+            req.body.business_name = business.name;
+        }
+
+        next();
+        }
 
     async validatePostingsExist(
         req: express.Request,

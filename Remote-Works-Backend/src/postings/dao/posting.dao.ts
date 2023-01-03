@@ -45,6 +45,9 @@ class PostingsDao {
             "business_id": {
                 "type": "String"
             },
+            "business_name": {
+                "type": "String"
+            },
             applicants_id: [String]
            
         }, { id : false}

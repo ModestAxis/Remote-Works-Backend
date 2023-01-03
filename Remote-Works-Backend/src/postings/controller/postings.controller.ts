@@ -23,7 +23,7 @@ class PostingsController {
     }
    
     async createPosting(req: express.Request, res: express.Response) {
-        req.body.business_id = res.locals.jwt.userId;
+        //req.body.business_id = res.locals.jwt.userId;
         const postingId = await postingsService.create(req.body);
         res.status(201).send({id: postingId})
     }

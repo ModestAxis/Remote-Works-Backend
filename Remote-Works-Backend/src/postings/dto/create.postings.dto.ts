@@ -14,6 +14,7 @@ export interface CreatePostingsDto {
     isPromoted?: Boolean,
     requirement?: string,
     business_id?: string,
+    business_name?: string,
     applicants_id?: Array<string>
 
 }

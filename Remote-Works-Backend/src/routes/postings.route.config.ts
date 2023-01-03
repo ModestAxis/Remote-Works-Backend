@@ -27,7 +27,8 @@ export class PostingsRoutes extends CommonRoutesConfig {
                 
                 PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_COMPANY),
                 //postingsMiddleware.validateOneJobTitlePerBusiness,
-                
+                postingsMiddleware.businessIdToBody,
+                postingsMiddleware.businessNameToBody,
                 postingsController.createPosting);
 
         this.app
