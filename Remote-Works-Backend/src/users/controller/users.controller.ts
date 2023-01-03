@@ -51,6 +51,7 @@ class UsersController {
         
         res.status(200).send(req.body.applications);
     }
+    
 }
 
 export default new UsersController();

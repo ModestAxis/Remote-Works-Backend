@@ -1,6 +1,7 @@
 import express from 'express';
 import BusinessService from '../services/business.service';
 import debug from 'debug';
+import postingDao from '../../postings/dao/posting.dao';
 
 const log: debug.IDebugger = debug('app:business-controller');
 
@@ -100,6 +101,21 @@ class BusinessMiddleware {
         } else {
             next();
         }
+    }
+
+    async getBusinessPostings(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        let body : Array<any> = [];
+        for( let app of res.locals.business.job_postings) {
+             body.push( await postingDao.getPostingsById(app))  
+        }
+        
+        req.body.postings = body;
+        
+        next();
     }
 
 }

@@ -45,6 +45,10 @@ class BusinessController {
         log(await BusinessService.deleteById(req.body.id));
         res.status(204).send();
     }
+    
+    async sendBusinessPostings(req: express.Request, res: express.Response) {
+        res.status(200).send(req.body.postings)
+    }
 }
 
 export default new BusinessController();

@@ -116,7 +116,6 @@ export class UsersRoutes extends CommonRoutesConfig {
 
         )
 
-        this.app
 
         return this.app;
     }

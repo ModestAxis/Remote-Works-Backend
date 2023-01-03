@@ -38,7 +38,7 @@ class AuthMiddleware {
         const business: any = await businessService.getBusinessByEmailWithPassword(
             req.body.email
         );
-        console.log(business.password)
+        
         if (business) {
             const passwordHash = business.password;
             if (await bcrypt.compare(req.body.password , passwordHash)) {

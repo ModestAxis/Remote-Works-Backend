@@ -57,6 +57,16 @@ export class BusinessRoutes extends CommonRoutesConfig {
             BusinessMiddleware.BusinessCantChangePermission,
             BusinessController.patch,
         ]);
+
+        this.app.get(`/business/postings/:businessId`,
+            BusinessMiddleware.validateBusinessExists,
+            jwtMiddleware.validJWTNeeded,
+            PermissionMiddleware.sameUserOrAdmin,
+            BusinessMiddleware.BusinessCantChangePermission,
+            PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_COMPANY),
+            BusinessMiddleware.getBusinessPostings,
+            BusinessController.sendBusinessPostings,
+            )
         
 
         return this.app;
