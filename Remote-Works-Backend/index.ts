@@ -97,7 +97,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server(is Running)');
 });
 
-export default app.listen(PORT, () => {
+export default app.listen(PORT || 4000, () => {
 
   routes.forEach((route: CommonRoutesConfig) => {
     debugLog(`Routes configured for ${route.getName()}`);
