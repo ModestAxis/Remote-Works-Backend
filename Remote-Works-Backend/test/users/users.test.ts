@@ -3,9 +3,9 @@ import supertest from 'supertest';
 import { expect } from 'chai';
 import shortid from 'shortid';
 import mongoose from 'mongoose';
-import * as dotenv from 'dotenv';
+// import * as dotenv from 'dotenv';
 
-dotenv.config({ path: "../../.env" });
+// dotenv.config({ path: "../../.env" });
 
 declare global {
     namespace NodeJS {
