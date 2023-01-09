@@ -16,7 +16,7 @@ import debug from 'debug';
 
 
 
-//const dotenvResult = dotenv.config();
+const dotenvResult = dotenv.config();
 // if (dotenvResult.error) {
 //     throw dotenvResult.error;
 // }
