@@ -17,7 +17,7 @@ class PostingsMiddleware {
             next();
         } else {
             res.status(400).send({
-                error: `Missing required Fields -> job_title and Country`
+                error: `Missing required Fields -> job_title and country`
             })
         }
     }

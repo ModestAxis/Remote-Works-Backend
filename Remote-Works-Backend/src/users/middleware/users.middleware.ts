@@ -78,6 +78,52 @@ class UsersMiddleware {
         }
     }
 
+    async extractUserFromJWT(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        
+        const user = await userService.readById(res.locals.jwt.userId);
+        if (user) {
+            res.locals.user = user;
+            next();
+        } else {
+            res.status(404).send({
+                error: `User ${res.locals.jwt.userId} not found`,
+            });
+        }
+    }
+    
+
+    async pushPostToFav(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        if(!res.locals.user.favorites) {
+            res.locals.user.favorites = []
+        }
+        res.locals.user.favorites.push(req.params.postingId);
+        req.body = res.locals.user;
+        req.body.id = req.body._id;
+        console.log(req.body );
+        next();
+    }
+
+    async subscribeUserToNewsLetter(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        res.locals.user.isSubscribed = true;
+        req.body = res.locals.user;
+        req.body.id = req.body._id;
+        console.log(req.body );
+        next();
+    }
+
+
     async extractUserId(
         req: express.Request,
         res: express.Response,
@@ -92,7 +138,7 @@ class UsersMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        // req.body.id = res.locals.jwt.userId;
+        req.body.id = res.locals.jwt.userId;
         console.log(req.body.id);
         next();
     }

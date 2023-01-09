@@ -16,10 +16,10 @@ import debug from 'debug';
 
 
 
-const dotenvResult = dotenv.config();
-if (dotenvResult.error) {
-    throw dotenvResult.error;
-}
+//const dotenvResult = dotenv.config();
+// if (dotenvResult.error) {
+//     throw dotenvResult.error;
+// }
 
 if (!(process.env.PORT || process.env.MONGO_URL || process.env.JWT_SECRET)) {
   throw new Error(

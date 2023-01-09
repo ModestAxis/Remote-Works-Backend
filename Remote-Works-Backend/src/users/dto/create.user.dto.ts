@@ -13,4 +13,6 @@ export interface CreateUserDto {
     permissionFlags?: number;
     experiences?: Array<any>;
     applications?: Array<any>;
+    favorites?: Array<any>;
+    isSubscribed?: boolean;
 }

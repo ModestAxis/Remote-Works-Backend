@@ -7,6 +7,7 @@ import { PermissionFlag } from '../common/middleware/common.permissionflag.enum'
 import express from 'express';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middlewar';
 import { body } from 'express-validator';
+import usersMiddleware from '../users/middleware/users.middleware';
 
 export class UsersRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
@@ -20,7 +21,7 @@ export class UsersRoutes extends CommonRoutesConfig {
                 jwtMiddleware.validJWTNeeded,
                 PermissionMiddleware.permissionFlagRequired(PermissionFlag.ADMIN_PERMISSION),
                 UsersController.listUsers
-                )
+            )
             .post(
                 body('email').isEmail(),
                 body('password').isLength({ min: 5 }).withMessage('Must include password (5+ characters)'),
@@ -77,7 +78,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_USER),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersController.patch,
-            
+
         ]);
 
         this.app.patch(`/users/experiences/:userId`, [
@@ -89,7 +90,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.pushExperienceToArray,
             UsersController.patch,
-            
+
         ])
 
         this.app.patch(`/users/experiences/remove/:userId`, [
@@ -101,7 +102,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.removeExperienceFromArray,
             UsersController.patch,
-            
+
         ]);
 
         this.app.get(`/users/applications/:userId`,
@@ -112,10 +113,25 @@ export class UsersRoutes extends CommonRoutesConfig {
             PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_USER),
             UsersMiddleware.getUserApplication,
             UsersController.sendUserApplications,
-            
+
 
         )
 
+        this.app.get(`/users/applications/favorite/:postingId`,
+            jwtMiddleware.validJWTNeeded,
+            PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_USER),
+            usersMiddleware.extractUserFromJWT,
+            usersMiddleware.pushPostToFav,
+            UsersController.patch
+        )
+
+        this.app.get(`/users/newsletter/subscribe`,
+            jwtMiddleware.validJWTNeeded,
+            PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_USER),
+            usersMiddleware.extractUserFromJWT,
+            usersMiddleware.subscribeUserToNewsLetter,
+            UsersController.patch
+        )
 
         return this.app;
     }

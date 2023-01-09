@@ -60,7 +60,11 @@ class UsersDao {
           "Mixed"
         ]
       },
-      applications : [String]
+      applications : [String],
+
+      favorites : [String],
+
+      isSubscribed : Boolean
 
     }, { id: false }
   )
