@@ -96,7 +96,7 @@ class UsersMiddleware {
     }
     
 
-    async pushPostToFav(
+    async pushOrRemovePostFromFav(
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
@@ -104,7 +104,11 @@ class UsersMiddleware {
         if(!res.locals.user.favorites) {
             res.locals.user.favorites = []
         }
+        if (res.locals.user.favorites.includes(req.params.postingId)) {
+           res.locals.user.favorites = res.locals.user.favorites.filter((id : string) => id !== req.params.postingId)
+        } else {
         res.locals.user.favorites.push(req.params.postingId);
+        }
         req.body = res.locals.user;
         req.body.id = req.body._id;
         console.log(req.body );
@@ -115,8 +119,12 @@ class UsersMiddleware {
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
-    ) {
-        res.locals.user.isSubscribed = true;
+    ) { 
+        if (!res.locals.user.isSubscribed) {
+            res.locals.user.isSubscribed = false;
+        }
+
+        res.locals.user.isSubscribed ? res.locals.user.isSubscribed = false : res.locals.user.isSubscribed = true; 
         req.body = res.locals.user;
         req.body.id = req.body._id;
         console.log(req.body );

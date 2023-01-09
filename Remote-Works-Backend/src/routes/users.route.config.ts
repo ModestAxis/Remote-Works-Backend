@@ -121,9 +121,11 @@ export class UsersRoutes extends CommonRoutesConfig {
             jwtMiddleware.validJWTNeeded,
             PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_USER),
             usersMiddleware.extractUserFromJWT,
-            usersMiddleware.pushPostToFav,
+            usersMiddleware.pushOrRemovePostFromFav,
             UsersController.patch
         )
+
+        
 
         this.app.get(`/users/newsletter/subscribe`,
             jwtMiddleware.validJWTNeeded,

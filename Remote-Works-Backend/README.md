@@ -31,6 +31,12 @@ remove an experience from the Experience ID `IMPORTANT: REQUIRE the ID of the ex
 ### `/users/applications/:userId`
 #### GET
 gets and array containing all of users applications and status 200.
+### `/users/applications/favorite/:postingId`
+#### GET
+Adds a postingId to the list of favorites for a User, if the posting already exist in the array then removes it instead, the user is the one logged in (does not need to be specified in body or param but requires valid JWT) then returns 204
+### `/users/newsletter/subscribe`
+#### GET
+will flag an account as subscribed to the newsletter, If already flagged, will unflag. Require the user to be logged in with valid JWT no need to specify userID. Should return 204 on completion. 
 
 ## Business Routes
 ### `/business`
@@ -60,7 +66,7 @@ for now this act as a duplicate for business to get their postings but could be 
 #### GET 
 Returns a specific Postings from database
 #### PATCH
-Modify Partially ofr completly a job posting information
+Modify Partially or completly a job posting information
 ### `/postings/apply/:postingId`
 #### GET
 Route to use for Users to apply to a Job Postings, Uses the valid JWT to push ID to job postings and automatically push the Job ID to user applications Array and returns 204 status code.
