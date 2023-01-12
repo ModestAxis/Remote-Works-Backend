@@ -71,6 +71,10 @@ Modify Partially or completly a job posting information
 #### GET
 Route to use for Users to apply to a Job Postings, Uses the valid JWT to push ID to job postings and automatically push the Job ID to user applications Array and returns 204 status code.
 
+### `/postings/getusers/:postingId`
+#### GET
+Returns an array containing the info of every user who applied on a particular posting. `Important: Requires to be authentified to the same business account who made the postings!` will return an array with all the users profile and status 204.
+
 
 # things to do
 ## jwt

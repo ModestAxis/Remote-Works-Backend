@@ -63,6 +63,7 @@ class JwtMiddleware {
                         authorization[1],
                         jwtSecret
                     ) as Jwt;
+                    
                     next();
                 }
             } catch (err) {

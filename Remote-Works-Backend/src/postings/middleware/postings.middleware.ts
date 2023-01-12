@@ -75,7 +75,7 @@ class PostingsMiddleware {
     ) {
         
         const postings = await postingsService.readById(req.params.postingId);
-        
+       
         if(postings) {
             res.locals.postings = postings;
             next();
@@ -86,6 +86,40 @@ class PostingsMiddleware {
         }
 
     }
+
+    async validateBusinessisPostingCreator(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        if (res.locals.postings.business_id === res.locals.jwt.userId) {
+            
+            next();
+        } else {
+            res.status(403).send({
+                error: `Unauthorized Business account`
+            })
+        }
+    }
+    async getPostingsUserArray(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+
+        let body : Array<any> = [];
+
+        for( let userId of res.locals.postings.applicants_id ) {
+            body.push( await usersDao.getUserById(userId))
+        }
+
+        console.log(body)
+
+        req.body.users = body;
+
+        next();
+    }
+
 
     async extractPostingsId(
         req: express.Request,

@@ -1,7 +1,7 @@
+import { PermissionFlag } from './../common/middleware/common.permissionflag.enum';
 import { CommonRoutesConfig } from '../common/common.route.config';
 import jwtMiddleware from '../auth/middleware/jwt.middleware';
 import PermissionMiddleware from '../common/middleware/common.permission.middleware';
-import { PermissionFlag } from '../common/middleware/common.permissionflag.enum';
 import express from 'express';
 import BodyValidationMiddleware from '../common/middleware/body.validation.middlewar';
 import { body } from 'express-validator';
@@ -80,6 +80,16 @@ export class PostingsRoutes extends CommonRoutesConfig {
             postingsMiddleware.pushUserIdToPosting,
             postingsController.patch
 
+        )
+
+        this.app.get(`/postings/getusers/:postingId`,
+            postingsMiddleware.validatePostingsExist,
+            jwtMiddleware.validJWTNeeded,
+            PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_COMPANY),
+            postingsMiddleware.validateBusinessisPostingCreator,
+            postingsMiddleware.getPostingsUserArray,
+            postingsController.sendUserArray,
+        
         )
 
         return this.app;

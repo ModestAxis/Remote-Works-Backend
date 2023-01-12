@@ -16,6 +16,11 @@ class PostingsController {
         res.status(200).send(postings)
     }
 
+    async listPostingsApplicants(req: express.Request, res: express.Response) {
+        // const postings = await postingsService.listBusinessPostings(req.body.id);
+        res.status(200).send()
+    }
+
     
     async getPostingById(req: express.Request, res: express.Response) {
         const posting = await postingsService.readById(req.body.id);
@@ -38,7 +43,10 @@ class PostingsController {
         res.status(204).send()
     }
   
-    
+    async sendUserArray(req: express.Request, res: express.Response) {
+
+        res.status(200).send(req.body.users);
+    }
 }
 
 export default new PostingsController();
