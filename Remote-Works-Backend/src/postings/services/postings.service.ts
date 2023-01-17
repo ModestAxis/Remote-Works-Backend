@@ -30,6 +30,10 @@ class PostingsService implements CRUD {
         return PostingDao.updatePostingsById(id, resource);
     };
 
+    async search(query : any) {
+        return PostingDao.searchPostings(query);
+    };
+
     async readById(id: string) {
         return PostingDao.getPostingsById(id);
     };

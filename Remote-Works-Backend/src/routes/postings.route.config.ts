@@ -24,7 +24,7 @@ export class PostingsRoutes extends CommonRoutesConfig {
                 BodyValidationMiddleware.verifyBodyFieldsErrors,
                 postingsMiddleware.validatePostingsBodyFields,
                 jwtMiddleware.validJWTNeeded,
-                
+
                 PermissionMiddleware.permissionFlagRequired(PermissionFlag.VALIDATED_COMPANY),
                 //postingsMiddleware.validateOneJobTitlePerBusiness,
                 postingsMiddleware.businessIdToBody,
@@ -89,7 +89,13 @@ export class PostingsRoutes extends CommonRoutesConfig {
             postingsMiddleware.validateBusinessisPostingCreator,
             postingsMiddleware.getPostingsUserArray,
             postingsController.sendUserArray,
-        
+
+        )
+
+        this.app.get(`/search`,
+            
+            postingsMiddleware.extractSearchQueryParam,
+            postingsController.searchPostings
         )
 
         return this.app;

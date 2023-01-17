@@ -16,6 +16,11 @@ class PostingsController {
         res.status(200).send(postings)
     }
 
+    async searchPostings(req: express.Request, res: express.Response) {
+        const postings = await postingsService.search(req.body.query);
+        res.status(200).send(postings)
+    }
+
     async listPostingsApplicants(req: express.Request, res: express.Response) {
         // const postings = await postingsService.listBusinessPostings(req.body.id);
         res.status(200).send()

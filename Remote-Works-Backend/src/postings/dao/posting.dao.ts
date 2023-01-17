@@ -13,7 +13,7 @@ class PostingsDao {
 
     postingsSchema = new this.Schema(
         {
-            _id : String,
+            _id: String,
 
             "job_title": {
                 "type": "String"
@@ -27,14 +27,14 @@ class PostingsDao {
             "country": {
                 "type": "String"
             },
-            created_date : Date,
+            created_date: Date,
             "description": {
                 "type": "String"
             },
             "salary": {
                 "type": "String"
             },
-            start_date : Date,
+            start_date: Date,
             isContract: Boolean,
             contract_length_in_months: Number,
             isRenewable: Boolean,
@@ -49,8 +49,8 @@ class PostingsDao {
                 "type": "String"
             },
             applicants_id: [String]
-           
-        }, { id : false}
+
+        }, { id: false }
     )
 
     Postings = mongooseService.getMongoose().model('postings', this.postingsSchema, 'postings');
@@ -82,8 +82,8 @@ class PostingsDao {
         postingsFields: PatchPostingsDto | PutPostingsDto
     ) {
         const existingPostings = await this.Postings.findOneAndUpdate(
-            { _id:postingsId },
-            { $set: postingsFields},
+            { _id: postingsId },
+            { $set: postingsFields },
             { new: true }
         ).exec();
 
@@ -93,7 +93,29 @@ class PostingsDao {
     }
 
     async getBusinessPostingsById(businessId: string) {
-        return this.Postings.find({business_id : businessId}).exec()
+        return this.Postings.find({ business_id: businessId }).exec()
+    }
+
+    async searchPostings(query: any) {
+        if (!query.salaryMin) query.salaryMin = 0;
+        if (!query.salaryMax) query.salaryMax = Number.MAX_SAFE_INTEGER;
+        if (!query.title) query.title = "";
+
+        query.title = new RegExp(query.title, "i")
+
+        // if ('isContract' in query) {
+        //     if (!query.contractLenght) query.contractLenght = 0;
+        //     if (query.isContract) {
+
+        //     }
+        // }
+
+        return await this.Postings.find(
+            {
+                job_title: query.title,
+                salary: { $gte: query.salaryMin, $lte: query.salaryMax }
+            }
+        )
     }
 
     async removePostingsById(postingsId: string) {
@@ -103,7 +125,7 @@ class PostingsDao {
     async getPostings(limit = 25, page = 0) {
         return this.Postings.find()
             .limit(limit)
-            .skip(limit*page)
+            .skip(limit * page)
             .exec();
     }
 

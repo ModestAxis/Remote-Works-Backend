@@ -179,6 +179,11 @@ class UsersMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
+        if(!req.body.expId) {
+            res.status(400).send({
+                error: ['there is no expId in the req body']
+            })
+        }
         req.body.experiences = res.locals.user.experiences.filter((ele : any) =>  ele.expId != req.body.expId)
         next();
     }

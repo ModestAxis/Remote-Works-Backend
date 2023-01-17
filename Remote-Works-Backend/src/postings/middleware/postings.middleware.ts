@@ -3,6 +3,7 @@ import postingsService from '../services/postings.service';
 import debug from 'debug';
 import usersDao from '../../users/dao/users.dao';
 import businessDao from '../../business/dao/business.dao';
+import { title } from 'process';
 
 const log : debug.IDebugger = debug('app:postings-middleware')
 
@@ -87,6 +88,26 @@ class PostingsMiddleware {
 
     }
 
+    async extractSearchQueryParam(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+        ) {
+            if (req.query.salaryMin)  res.locals.salaryMin = req.query.salaryMin;
+            if (req.query.salaryMax)  res.locals.salaryMax = req.query.salaryMax;
+            if ('isContract' in req.query) (req.query.isContract == 'true' || req.query.isContract == '1') ? res.locals.isContract = true : res.locals.isContract = false;
+            if (req.query.contractLenght) res.locals.contractLenght = req.query.contractLenght;
+            if(req.query.title) res.locals.title = req.query.title;
+
+            
+            req.body.query = res.locals;
+
+            console.log(req.body.query)
+ 
+            next();
+
+        }
+ 
     async validateBusinessisPostingCreator(
         req: express.Request,
         res: express.Response,
