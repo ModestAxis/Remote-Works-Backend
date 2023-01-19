@@ -109,13 +109,15 @@ class PostingsDao {
 
         //     }
         // }
-
-        return await this.Postings.find(
+        
+        let posts = await this.Postings.find(
             {
                 job_title: query.title,
                 salary: { $gte: query.salaryMin, $lte: query.salaryMax }
             }
+            
         )
+        return posts.sort((a : any ,b : any) => ( b.isPromoted - a.isPromoted  || a.created_date - b.created_date));
     }
 
     async removePostingsById(postingsId: string) {
