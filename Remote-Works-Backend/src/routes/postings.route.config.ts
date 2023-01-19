@@ -29,6 +29,7 @@ export class PostingsRoutes extends CommonRoutesConfig {
                 //postingsMiddleware.validateOneJobTitlePerBusiness,
                 postingsMiddleware.businessIdToBody,
                 postingsMiddleware.businessNameToBody,
+                postingsMiddleware.isPromotedSanityCheck,
                 postingsController.createPosting);
 
         this.app

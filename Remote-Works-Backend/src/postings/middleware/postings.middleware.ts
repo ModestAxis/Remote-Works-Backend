@@ -69,6 +69,17 @@ class PostingsMiddleware {
         next();
         }
 
+        async isPromotedSanityCheck(
+            req: express.Request,
+            res: express.Response,
+            next: express.NextFunction
+        ) {
+            if (!req.body.isPromoted) req.body.isPromoted = false;
+            next();
+            }
+
+    
+
     async validatePostingsExist(
         req: express.Request,
         res: express.Response,
